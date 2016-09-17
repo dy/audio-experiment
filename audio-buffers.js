@@ -19,12 +19,12 @@ var util = require('audio-buffer-utils');
 
 //setup values
 var nodes = [];
-var size = 50, maxF = 20000, minF = 20;
+var size = 200, maxF = 5000, minF = 50;
 
 
 //start the game
-createBuffers(nodes);
-// createOscillators(nodes);
+// createBuffers(nodes);
+createOscillators(nodes);
 start(nodes);
 
 
