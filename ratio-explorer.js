@@ -25,32 +25,35 @@ let spectrum = Spectrum({
 });
 
 
+let golden = 1.61803398875;
+
+//TODO: try exp/11, golden/8, pi/8
 
 let type = 'triangle';
 let f = 280;
-let n1 = 2;
+let n1 = 13;
 let n2 = 3;
-let n3 = 4;
-let n4 = 5;
-let d = 8;
+let n3 = 5;
+let n4 = 8;
+let d = 1;
 let detuneF = 4;
 let detuneAmp = 5;
 
 let base = createOscillator(f);
-let o1 = createOscillator(f * n1);
-let o2 = createOscillator(f * n2);
-let o3 = createOscillator(f * n3);
-let o4 = createOscillator(f * n4);
+let o1 = createOscillator(f);
+let o2 = createOscillator(f);
+let o3 = createOscillator(f);
+let o4 = createOscillator(f);
 
 //make unperfect unisson
-o1.detune.value = -5;
-setInterval(() => {
-	base.detune.value = Math.sin(2*Math.PI*ctx.currentTime*detuneF) * detuneAmp;
-	o1.detune.value = Math.sin(2*Math.PI*ctx.currentTime*detuneF) * detuneAmp;
-	o2.detune.value = Math.sin(2*Math.PI*ctx.currentTime*detuneF) * detuneAmp;
-	o3.detune.value = Math.sin(2*Math.PI*ctx.currentTime*detuneF) * detuneAmp;
-	o4.detune.value = Math.sin(2*Math.PI*ctx.currentTime*detuneF) * detuneAmp;
-}, 5);
+o1.detune.value = 0;
+// setInterval(() => {
+// 	base.detune.value = Math.sin(2*Math.PI*ctx.currentTime*detuneF) * detuneAmp;
+// 	o1.detune.value = Math.sin(2*Math.PI*ctx.currentTime*detuneF) * detuneAmp;
+// 	o2.detune.value = Math.sin(2*Math.PI*ctx.currentTime*detuneF) * detuneAmp;
+// 	o3.detune.value = Math.sin(2*Math.PI*ctx.currentTime*detuneF) * detuneAmp;
+// 	o4.detune.value = Math.sin(2*Math.PI*ctx.currentTime*detuneF) * detuneAmp;
+// }, 5);
 
 
 // setInterval(() => {
@@ -97,16 +100,16 @@ let panel = Panel([
 		d = v;
 	}},
 	{type: 'raw', content: 'Ratios'},
-	{id: 'n1', label: 'Osc 1', type: 'range', step: 1, min: 1, max: 17, value: n1, change: v => {
+	{id: 'n1', label: 'Osc 1', type: 'range', step: .00001, min: 1, max: 17, value: n1, change: v => {
 		n1 = v;
 	}},
-	{id: 'n2', label: 'Osc 2', type: 'range', step: 1, min: 1, max: 17, value: n2, change: v => {
+	{id: 'n2', label: 'Osc 2', type: 'range', step: .00001, min: 1, max: 17, value: n2, change: v => {
 		n2 = v;
 	}},
-	{id: 'n3', label: 'Osc 3', type: 'range', step: 1, min: 1, max: 17, value: n3, change: v => {
+	{id: 'n3', label: 'Osc 3', type: 'range', step: .00001, min: 1, max: 17, value: n3, change: v => {
 		n3 = v;
 	}},
-	{id: 'n4', label: 'Osc 4', type: 'range', step: 1, min: 1, max: 17, value: n4, change: v => {
+	{id: 'n4', label: 'Osc 4', type: 'range', step: .00001, min: 1, max: 17, value: n4, change: v => {
 		n4 = v;
 	}},
 	// {type: 'raw', content: 'Detune'},

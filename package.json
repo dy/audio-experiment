@@ -6,6 +6,8 @@
   "dependencies": {
     "enable-mobile": "^1.0.5",
     "gl-spectrum": "^2.0.10",
+    "insert-styles": "^1.2.1",
+    "just-extend": "^1.1.21",
     "settings-panel": "^1.8.16"
   },
   "devDependencies": {},
