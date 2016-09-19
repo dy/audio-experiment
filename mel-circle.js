@@ -107,7 +107,6 @@ function MelCircle (opts) {
 MelCircle.prototype.width = 300;
 MelCircle.prototype.height = 300;
 
-MelCircle.prototype.random = false;
 MelCircle.prototype.tempo = 128;
 MelCircle.prototype.step = 1/16;
 MelCircle.prototype.f = 440;
@@ -119,17 +118,14 @@ MelCircle.prototype.type = 'sawtooth';
 MelCircle.prototype.addStep = function (id, f) {
 	let stepEl = this.element.appendChild(document.createElement('input'));
 	stepEl.type = 'radio';
-	// stepEl.name = this.id;
 	stepEl.className = 'mel-circle-step';
 	stepEl.id = id;
-
+	stepEl.isActive = false;
 	stepEl.title = id + ': ' + f + 'Hz';
-
 	stepEl.f = f || this.f;
 
 	stepEl.addEventListener('click', e => {
-		let stepEl = e.currentTarget;
-		if (!stepEl.osc) {
+		if (!stepEl.isActive) {
 			this.start(parseInt(stepEl.id));
 		}
 		else {
@@ -176,13 +172,14 @@ MelCircle.prototype.start = function (i) {
 
 	let step = this.steps[i];
 
-	if (!step || step.osc) return this;
+	if (!step || step.isActive) return this;
 
 	let osc = oscMap.get(i / this.stepsNumber);
 	osc.type = this.type;
 	osc.frequency.value = step.f;
 	osc.gain.gain.value = 1;
 	step.checked = true;
+	step.isActive = true;
 
 	return step;
 }
@@ -194,9 +191,10 @@ MelCircle.prototype.stop = function (i) {
 
 	let step = this.steps[i];
 
-	if (!step || !step.checked) return this;
+	if (!step || !step.isActive) return this;
 
 	step.checked = false;
+	step.isActive = false;
 	let osc = oscMap.get(i / this.stepsNumber);
 	osc.gain.gain.value = 0;
 }
