@@ -33,6 +33,31 @@ css(`
 	.mel-circle-step
 `);
 
+
+let oscMap = new Map();
+
+let POLYPHONY = 32;
+for (let i = 1; i <= POLYPHONY; i++) {
+	for (let j = 0; j < i; j++) {
+		let ratio = j/i;
+		if (oscMap.has(ratio)) {
+			continue;
+		}
+
+		let gain = ctx.createGain();
+		gain.connect(ctx.destination);
+		gain.gain.value = 0;
+
+		let osc = ctx.createOscillator();
+		osc.connect(gain);
+		osc.start();
+
+		osc.gain = gain;
+
+		oscMap.set(ratio, osc);
+	}
+}
+
 //main class
 function MelCircle (opts) {
 	if (!(this instanceof MelCircle)) return new MelCircle(opts);
@@ -132,6 +157,8 @@ MelCircle.prototype.update = function (opts) {
 		step.style.left = cx + cx * Math.sin(angle) + 'px';
 		step.style.top = cy + cy * -Math.cos(angle) + 'px';
 		step.f = this.f * (i + 1)/this.stepsNumber;
+		let osc = oscMap.get(i / this.stepsNumber);
+		osc.frequency.value = step.f;
 	});
 
 	return this;
@@ -151,12 +178,10 @@ MelCircle.prototype.start = function (i) {
 
 	if (!step || step.osc) return this;
 
-	let osc = this.context.createOscillator();
+	let osc = oscMap.get(i / this.stepsNumber);
 	osc.type = this.type;
 	osc.frequency.value = step.f;
-	osc.start(this.context.currentTime);
-	osc.connect(this.output);
-	step.osc = osc;
+	osc.gain.gain.value = 1;
 	step.checked = true;
 
 	return step;
@@ -172,12 +197,8 @@ MelCircle.prototype.stop = function (i) {
 	if (!step || !step.checked) return this;
 
 	step.checked = false;
-	step.osc.stop(this.context.currentTime);
-	let osc = step.osc;
-	step.osc = null;
-	setTimeout(() => {
-		osc.disconnect();
-	})
+	let osc = oscMap.get(i / this.stepsNumber);
+	osc.gain.gain.value = 0;
 }
 
 
@@ -188,11 +209,11 @@ let Panel = require('settings-panel');
 
 //current state
 let stepsNumber = 12;
-let type = 'sawtooth';
+let type = 'triangle';
 let seq = 'random';
 let period = 1;
 let frequency = 440;
-let connections = 2;
+let connections = 1;
 
 //just recreate the whole thing
 let circle = null;
@@ -215,11 +236,12 @@ function update () {
 		});
 	}
 }
+update();
 
 function updateInterval () {
 	clearInterval(interval);
 
-	let pause = period*1000 * connections / stepsNumber;
+	let pause = period * 1000 * connections / stepsNumber;
 
 	//setup playback
 	if (seq === 'manual') {
@@ -284,11 +306,11 @@ let panel = Panel([
 	{id: 'frequency', type: 'range', precision: .01, min: 20, log: true, value: frequency, max: 15000, change: v => {
 		frequency = v;
 	}},
-	{id: 'steps', type: 'range', min: 1, max: 64, step: 1, value: 12, change: v => {
+	{id: 'steps', type: 'range', min: 1, max: POLYPHONY, step: 1, value: 12, change: v => {
 		stepsNumber = v;
 		updateInterval();
 	}},
-	{id: 'connections', type: 'range', min: 1, max: 64, step: 1, value: connections, change: v => {
+	{id: 'connections', type: 'range', min: 1, max: POLYPHONY, step: 1, value: connections, change: v => {
 		connections = v;
 		updateInterval();
 	}},

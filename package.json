@@ -14,6 +14,7 @@
   "scripts": {
     "build": "npm run build-ratio",
     "build-ratio": "browserify ratio-explorer.js -o ./demo/ratio-explorer.js -g bubleify",
+    "build-mel": "browserify mel-circle.js -o ./demo/mel-circle.js -g bubleify",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
