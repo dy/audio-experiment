@@ -4,17 +4,25 @@
   "description": "Various melodic experiments",
   "main": "ratio-chords.js",
   "dependencies": {
+    "audio-buffer-utils": "^4.0.1",
+    "audio-lena": "^1.1.0",
+    "audio-loader": "^0.6.0",
+    "audio-source": "^1.1.1",
     "enable-mobile": "^1.0.5",
+    "gl-component": "^2.3.9",
     "gl-spectrum": "^2.0.10",
     "insert-styles": "^1.2.1",
     "just-extend": "^1.1.21",
     "settings-panel": "^1.8.16"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "enable-mobile": "^1.0.7"
+  },
   "scripts": {
     "build": "npm run build-ratio",
     "build-ratio": "browserify ratio-explorer.js -o ./demo/ratio-explorer.js -g bubleify",
     "build-mel": "browserify mel-circle.js -o ./demo/mel-circle.js -g bubleify",
+    "build-some": "browserify some.js -g bubleify | indexhtmlify | metadataify > demo/some.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

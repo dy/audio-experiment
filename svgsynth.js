@@ -46,8 +46,7 @@ Gen(t => {
 	let {x, y} = shape.getPointAtLength( (t*l*f) % l);
 	let amp = len(x, y)/diag;
 	let angle = t*τ*f;
-	return amp * Math.sin(angle);
-	// return Math.sin(f*Math.PI*2*t)
+	return [amp * Math.sin(angle), amp*Math.cos(angle)];
 })
 .pipe(Through(chunk => {
 	wf.push(chunk.getChannelData(0));
