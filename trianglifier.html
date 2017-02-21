@@ -9128,9 +9128,8 @@ var Source = require('audio-source/stream')
 var Speaker = require('audio-speaker/stream')
 var Generator = require('audio-generator/stream')
 
-
-
 var opts = {
+	mute: false,
 	level: 0,
 	depth: 1
 }
@@ -9182,6 +9181,13 @@ var panel = createPanel([{
 		drawLevel(v)
 		//TODO: add trend render at the corner
 	}
+}, {
+	id: 'mute',
+	type: 'toggle',
+	value: false,
+	change: function (v) {
+		opts.mute = v
+	}
 }], {
 	title: '<a href="https://github.com/dfcreative/audio-experiment">Trianglifier</a>',
 	css: "\n\t:host {\n\t\tz-index: 1;\n\t\tbackground: none;\n\t}\n\t"
@@ -9190,19 +9196,19 @@ var panel = createPanel([{
 var wf = createWaveform({palette: ['white', 'black']});
 
 
-Source(lena, {channels: 1, samplesPerFrame: 4096})
+Source(lena, {channels: 1, samplesPerFrame: 2048, loop: true})
 // Generator((t) => {
 // 	return Math.cos(Math.PI * 2 * 440 * t)
 // }, {duration: 2})
 
 //map chunks via trianglifier
-.pipe(Through(trianglify, {samplesPerFrame: 4096}))
+.pipe(Through(trianglify, {samplesPerFrame: 2048}))
 
 //render
 .pipe(Through(function (chunk) {
 	wf.push(chunk.getChannelData(0));
 }))
-.pipe(Speaker({ samplesPerFrame: 4096}));
+.pipe(Speaker({ samplesPerFrame: 2048}));
 
 
 
@@ -9218,6 +9224,8 @@ function Trianglify (opts) {
 		var target = util.shallow(chunk)
 		var channels = chunk.numberOfChannels
 		var level = opts.level
+
+		if (opts.mute) { return chunk }
 
 		for (var c = 0; c < channels; c++) {
 			var data = chunk.getChannelData(c)
@@ -9238,7 +9246,7 @@ function Trianglify (opts) {
 					var n = i - ptr
 					var trend = (curr - extremum) / n
 
-					for (var j = ptr; j < i; j++) {
+					for (var j = ptr; j <= i; j++) {
 						targetData[j] = extremum + trend * (j - ptr)
 					}
 
