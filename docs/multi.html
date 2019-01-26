@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>---</title>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+<meta charset=utf-8></head>
+<body></body>
+<script>
+!function(){"use strict";var e,t=(e=function(){return Math.sqrt(-2*Math.log(Math.random()))*Math.cos(2*Math.PI*Math.random())})&&e.__esModule?e:{default:e};let n=new AudioContext,a=new GainNode(n,{gain:.1}),u=new OscillatorNode(n,{type:"sine",frequency:69}),l=new OscillatorNode(n,{type:"sine",frequency:71});u.start(),l.start(),n.createScriptProcessor(4096,1,1).onaudioprocess=function(e){e.inputBuffer.getChannelData(0),e.outputBuffer.getChannelData(0).set(e.inputBuffer.getChannelData(0))},setInterval(()=>{let e=parseFloat(s.value);e+=(0,t.default)(),s.value=e,s.dispatchEvent(new Event("input")),e=parseFloat(i.value),e+=.02*(0,t.default)(),i.value=e,i.dispatchEvent(new Event("input"))},100),a.connect(n.destination),u.connect(a),l.connect(a);let i=document.body.appendChild(document.createElement("input"));i.type="range",i.min=.05,i.max=100,i.value=a.gain.value,i.step=.001,i.style.width="100%",i.addEventListener("input",e=>{a.gain.value=i.value,r.gain.value=.2*i.value});let o=new OscillatorNode(n,{type:"sine",frequency:369}),c=new OscillatorNode(n,{type:"sine",frequency:1.2*o.frequency.value}),r=new GainNode(n,{gain:.05});o.start(),c.start(),o.connect(r),c.connect(r),r.connect(n.destination);let s=document.body.appendChild(document.createElement("input"));s.type="range",s.min=350,s.max=420,s.value=o.frequency.value+1,s.step=.1,s.style.width="100%",s.addEventListener("input",e=>{let t=parseFloat(s.value);o.frequency.value=t-1,c.frequency.value=1.2*t+1})}();
+</script>
+</html>

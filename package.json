@@ -9,6 +9,7 @@
     "audio-loader": "^0.6.0",
     "audio-source": "^1.1.1",
     "enable-mobile": "^1.0.5",
+    "gauss-random": "^1.0.1",
     "gl-component": "^2.3.9",
     "gl-spectrum": "^2.0.10",
     "insert-styles": "^1.2.1",

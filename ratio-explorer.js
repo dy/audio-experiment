@@ -120,7 +120,7 @@ let panel = Panel([
 	// 	detuneF = v;
 	// }}
 ], {
-title: '<a href="https://github.com/dfcreative/sound-experiment">Ratio explorer</a>',
+title: '<a href="https://github.com/dy/sound-experiment">Ratio explorer</a>',
 css: `
 	:host {
 		background: none;

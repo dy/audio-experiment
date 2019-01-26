@@ -83,7 +83,7 @@ let panel = createPanel([{
 		opts.mute = v
 	}
 }], {
-	title: '<a href="https://github.com/dfcreative/audio-experiment">Trianglifier</a>',
+	title: '<a href="https://github.com/dy/audio-experiment">Trianglifier</a>',
 	css: `
 	:host {
 		z-index: 1;

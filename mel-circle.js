@@ -324,7 +324,7 @@ let panel = Panel([
 		type = v;
 	}}
 ], {
-	title: '<a href="https://github.com/dfcreative/audio-experiment">Melodic circle</a>',
+	title: '<a href="https://github.com/dy/audio-experiment">Melodic circle</a>',
 	css: `
 		:host {
 			z-index: 1;
