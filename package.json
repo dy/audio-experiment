@@ -8,10 +8,12 @@
     "audio-lena": "^1.1.0",
     "audio-loader": "^0.6.0",
     "audio-source": "^1.1.1",
+    "emmy": "^6.0.1",
     "enable-mobile": "^1.0.5",
     "gauss-random": "^1.0.1",
     "gl-component": "^2.3.9",
     "gl-spectrum": "^2.0.10",
+    "gl-waveform": "^4.3.3",
     "insert-styles": "^1.2.1",
     "just-extend": "^1.1.21",
     "settings-panel": "^1.8.16"

@@ -1,46 +1,43 @@
 import Waveform from 'gl-waveform'
-import State from 'st8'
-import e from 'emmy'
+import {on, off, emit} from 'emmy'
 
 let wf = Waveform()
 
-const FFT_SIZE = 4096
-let spectrum = new Array(FFT_SIZE)
-
+const FFT_SIZE = 512
+let spectrum = new Float64Array(FFT_SIZE)
+spectrum[100] = 1
+wf.set(spectrum)
+wf.render()
 
 var isPressed = false
 
-wf.canvas.add
+// drag
+on(wf.canvas, 'mousedown touchstart', e => {
+	let lastX = null, lastY = null
 
-let penState = State({
-	idle: [
-		() => {
-			wf.canvas.addEventListener('mousedown', () => {
-				penState.set('pressed')
-			})
-		},
-		() => {
+	on(wf.canvas, 'mousemove.draw touchmove.draw', e => {
+		if (lastX == null) lastX = e.x, lastY = e.y
 
+		for (let x = lastX, step = Math.sign(e.x - lastX); x != e.x; x += step) {
+			let rx = x / wf.canvas.width
+			let t = (x - lastX) / (e.x - lastX)
+			let y = e.y * t + lastY * (1 - t)
+			let ry = 1 - y / wf.canvas.height
+			let f = Math.round(rx * spectrum.length)
+			spectrum[f] = ry
 		}
-	],
 
-	pressed: [
-		() => {
-			wf.canvas.addEventListener('mouseup', () => {
-				penState.set('idle')
-			})
-			wf.canvas.addEventListener('mousemove', () => {
+		wf.set(spectrum).render()
 
-			})
-		},
-		() => {
-
-		}
-	]
+		lastX = e.x
+		lastY = e.y
+	})
+	on(wf.canvas, 'mouseup.draw touchend.draw', e => {
+		off(wf.canvas, '.draw')
+	})
 })
 
 
-// wf.set(spectrum)
 
 
 function ifft(mags) {
